@@ -42,20 +42,20 @@ class Entity:
         self.attack_range = entity_recipe.attack_range
         self.health = entity_recipe.health
         self.damage = entity_recipe.damage
-    
+
     def llm_friendly_print(self):
         #print the entity name
-        print("I am ", self.name, "I am represented by ", self.display_character)
-        print("I am on team ", self.team)
-        print("I have ", self.health, "health")
-        print("I can do ", self.damage, "damage")
-        print("I can move ", self.movement_range, "tiles")
-        print("I can attack ", self.attack_range, "tiles")
+        print("I am", self.name, "I am represented by", self.display_character)
+        print("I am on team", self.team)
+        print("I have", self.health, "health")
+        print("I can do", self.damage, "damage")
+        print("I can move", self.movement_range, "tiles")
+        print("I can attack", self.attack_range, "tiles")
         print("I am at position", self.position)
 
         print("")
- 
-    
+
+
     def calculate_valid_moves(self, game):
         # this will return a list of Actions where the action_type is MOVE and the payload is a Position
         valid_moves = []
@@ -69,7 +69,7 @@ class Entity:
                     continue
                 if game.board.get_tile(new_position) is not None:
                     valid_moves.append(Action(ActionType.MOVE, new_position))
-        
+
         return valid_moves
 
     def calculate_valid_attacks(self, game):
