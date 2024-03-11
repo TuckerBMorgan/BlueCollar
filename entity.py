@@ -51,7 +51,7 @@ class Entity:
         print("I can do ", self.damage, "damage")
         print("I can move ", self.movement_range, "tiles")
         print("I can attack ", self.attack_range, "tiles")
-        print("I am at position ", self.position.x, ",", self.position.y)
+        print("I am at position", self.position)
 
         print("")
  
