@@ -29,7 +29,12 @@ class Game:
         
     def preform_turn(self):
         possible_actions = self.start_turn()
-        self.update(possible_actions)
+        
+        # use the controller associated with the team to pick the action
+        controller = self.controllers[self.turn_order[0].team]
+        action_index = controller.choose_actions(self, possible_actions)
+        chosen_action = possible_actions[action_index]
+        self.update(chosen_action)
         self.end_turn()            
     
     def clear_board(self):
@@ -51,13 +56,12 @@ class Game:
         valid_actions = valid_moves + valid_attacks
         return valid_actions
 
-    def update(self, possible_actions: list):
+    def update(self, chosen_action):
         # pick a random action
-        action = random.choice(possible_actions)
-        if action.action_type == ActionType.MOVE:
-            self.move_entity(self.turn_order[0], action.payload)
-        if action.action_type == ActionType.ATTACK:
-            target_name = action.payload[1]
+        if chosen_action.action_type == ActionType.MOVE:
+            self.move_entity(self.turn_order[0], chosen_action.payload)
+        if chosen_action.action_type == ActionType.ATTACK:
+            target_name = chosen_action.payload[1]
             # get target from name
             target = None
             for entity in self.entities:

@@ -32,10 +32,14 @@ game = Game(board, entities)
 game.llm_friendly_world_state_print()
 
 
-'''
-pygame.init()
+
+
 
 while game.is_over() == False:
+    game.preform_turn()
+
+'''
+pygame.init()
     screen = pygame.display.set_mode((800, 600))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
