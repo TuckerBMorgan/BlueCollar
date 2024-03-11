@@ -45,14 +45,14 @@ class Entity:
     
     def llm_friendly_print(self):
         #print the entity name
-        print("I am ", self.name)
+        print("I am ", self.name, "I am represented by ", self.display_character)
         print("I am on team ", self.team)
-        print("I have ", self.health, " health")
-        print("I can do ", self.damage, " damage")
-        print("I can move ", self.movement_range, " tiles")
-        print("I can attack ", self.attack_range, " tiles")
-        print("I am at position ", self.position.x, ", ", self.position.y)
-        print("I am represented by ", self.display_character)
+        print("I have ", self.health, "health")
+        print("I can do ", self.damage, "damage")
+        print("I can move ", self.movement_range, "tiles")
+        print("I can attack ", self.attack_range, "tiles")
+        print("I am at position ", self.position.x, ",", self.position.y)
+
         print("")
  
     
