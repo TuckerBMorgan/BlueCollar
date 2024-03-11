@@ -3,12 +3,14 @@ from position import Position
 from entity import Entity
 from board import Board
 from action import ActionType, Action
+from controller import ControllerType, Controller 
     
 class Game:
     board: Board
     entities: list
     turn_order: list
     team_names: list = ["Red", "Blue", "Green", "Yellow", "Purple", "Orange", "Pink", "Black", "White", "Brown"]
+    controllers: map
     
     def __init__(self, board: Board, entities: list):
         self.board = board
@@ -20,6 +22,10 @@ class Game:
             self.turn_order.append(entity)
         # shuffle the turn order
         random.shuffle(self.turn_order)
+        
+        self.controllers = {}
+        self.controllers[0] = Controller(ControllerType.RANDOM)
+        self.controllers[1] = Controller(ControllerType.MANUAL)
         
     def preform_turn(self):
         possible_actions = self.start_turn()
@@ -77,23 +83,30 @@ class Game:
     def llm_friendly_world_state_print(self):
         current_entity = self.turn_order[0]
         current_entity.llm_friendly_print()
-        print("My teammates are: ")
+        print("My teammates are: (team " + str(current_entity.team) + ")" )
         for entity in self.entities:
             if entity.team == current_entity.team and entity != current_entity:
                 print(entity.name)
-        print("My enemies are: ")
+        print("")
+        print("My enemies are: (team " + str(current_entity.team) + ")" )
         for entity in self.entities:
             if entity.team != current_entity.team:
                 print(entity.name)
-                
+        print("")                
+        action_count = 0
         print("My valid moves are: ")
         for action in current_entity.calculate_valid_moves(self):
-            print(action)
+            print(action_count, ":", action)
+            action_count += 1
+        print("")
         print("My valid attacks are: ")
         for action in current_entity.calculate_valid_attacks(self):
-            print(str(action))
+            print(action_count, ":", str(action))
+            action_count += 1
+        print("")
         print("The board looks like: ")
         self.board.draw_board()
+        print("")
         print("The turn order is: ")
         for entity in self.turn_order:
             print(entity.name)
