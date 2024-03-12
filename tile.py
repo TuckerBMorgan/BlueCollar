@@ -3,15 +3,18 @@ from entity import Entity
 
 class Tile:
     position: Position
-    entities: list
+    entity: Entity
 
-    def __init__(self, position: Position, entities: list):
+    def __init__(self, position: Position):
         self.position = position
-        self.entities = entities
+        self.entity = None
         self.tile_type = "ground"
     
-    def add_entity(self, entity: Entity):
-        self.entities.append(entity)
+    def set_entity(self, entity: Entity):
+        self.entity = entity
     
-    def clear_entities(self):
-        self.entities = []
+    def remove_entity(self):
+        self.entity = None
+    
+    def get_entity(self):
+        return self.entity

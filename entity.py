@@ -43,18 +43,15 @@ class Entity:
         self.health = entity_recipe.health
         self.damage = entity_recipe.damage
 
-    def llm_friendly_print(self):
-        #print the entity name
-        print("I am", self.name, "I am represented by", self.display_character)
-        print("I am on team", self.team)
-        print("I have", self.health, "health")
-        print("I can do", self.damage, "damage")
-        print("I can move", self.movement_range, "tiles")
-        print("I can attack", self.attack_range, "tiles")
-        print("I am at position", self.position)
-
-        print("")
-
+    def llm_friendly_string(self):
+        info_str = f"I am {self.name}, I am represented by {self.display_character}\n"
+        info_str += f"I am on team {self.team}\n"
+        info_str += f"I have {self.health} health\n"
+        info_str += f"I can do {self.damage} damage\n"
+        info_str += f"I can move {self.movement_range} tiles\n"
+        info_str += f"My attack range is {self.attack_range} tiles\n"
+        info_str += f"I am at position {self.position}\n\n"
+        return info_str
 
     def calculate_valid_moves(self, game):
         # this will return a list of Actions where the action_type is MOVE and the payload is a Position
@@ -67,6 +64,12 @@ class Entity:
                 # don't allow moving off the board
                 if new_position.x < 0 or new_position.x >= game.board.x_size or new_position.y < 0 or new_position.y >= game.board.y_size:
                     continue
+                    
+                # don't allow moving onto a tile with an entity
+                if game.board.get_entity(new_position) is not None:
+                    continue
+                
+                
                 if game.board.get_tile(new_position) is not None:
                     valid_moves.append(Action(ActionType.MOVE, new_position))
 
@@ -83,8 +86,8 @@ class Entity:
                 new_position = Position(self.position.x + x, self.position.y + y)
                 if new_position.x < 0 or new_position.x >= game.board.x_size or new_position.y < 0 or new_position.y >= game.board.y_size:
                     continue
-                entities = game.get_entities(new_position)
-                for entity in entities:
-                    if entity.team != self.team:
-                        valid_attacks.append(Action(ActionType.ATTACK, (new_position, entity.name)))
+                entity = game.board.get_entity(new_position)
+                
+                if entity is not None and entity.team != self.team:
+                    valid_attacks.append(Action(ActionType.ATTACK, (new_position, entity.name)))
         return valid_attacks

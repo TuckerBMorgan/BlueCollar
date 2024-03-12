@@ -7,6 +7,7 @@ def load_tile_images():
     # Example: {"grass": pygame.image.load("grass_tile.png"), "water": pygame.image.load("water_tile.png")}
     tiles = {}
     tiles["ground"] = pygame.image.load("./assets/tile_0049.png")
+    tiles["Alice"] = pygame.image.load("./assets/tile_0086.png")
     return tiles
 
 # Global dictionary of tile images
@@ -34,7 +35,22 @@ def render_tiles(screen, game_state):
     for tile in game_state.tiles:
         render_tile(screen, tile)
 
+def render_entities(screen, game_state):
+    """
+    Loop over the 'entities' field of the game state and render each entity.
+    
+    :param screen: Pygame screen to render the entities on.
+    :param game_state: The game state object or dictionary with an 'entities' field.
+    """
+    for entity in game_state.entities:
+        if entity.name in TILE_IMAGES:
+            entity_image = TILE_IMAGES[entity.name]
+            position = (entity.position.x * 16, entity.position.y * 16)
+            screen.blit(entity_image, position)
+
+
 def render(game_state, screen):
     screen.fill((0, 0, 0))  # Fill the screen with black (or any background)
     render_tiles(screen, game_state.board)  # Render the tiles
+    render_entities(screen, game_state)  # Render the entities
     pygame.display.flip()

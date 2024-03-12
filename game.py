@@ -18,14 +18,14 @@ class Game:
         # loop over all entities, add them to the board, and give them a random turn order
         self.turn_order = []
         for entity in self.entities:
-            self.board.add_entity(entity, entity.position)
+            self.board.set_entity(entity, entity.position)
             self.turn_order.append(entity)
         # shuffle the turn order
         random.shuffle(self.turn_order)
         
         self.controllers = {}
         self.controllers[0] = Controller(ControllerType.RANDOM)
-        self.controllers[1] = Controller(ControllerType.MANUAL)
+        self.controllers[1] = Controller(ControllerType.RANDOM)
         
     def preform_turn(self):
         possible_actions = self.start_turn()
@@ -42,13 +42,13 @@ class Game:
     
     def place_characters(self):
         for entity in self.entities:
-            self.board.add_entity(entity, entity.position)
+            self.board.set_entity(entity, entity.position)
 
     def start_turn(self):
         self.clear_board()
         self.place_characters()
         
-        self.llm_friendly_world_state_print()
+        print(self.llm_friendly_world_state_string())
         # get the first entity in the turn order and calculate its valid moves
         entity = self.turn_order[0]
         valid_moves = entity.calculate_valid_moves(self)
@@ -56,6 +56,7 @@ class Game:
         valid_actions = valid_moves + valid_attacks
         return valid_actions
 
+    
     def update(self, chosen_action):
         # pick a random action
         if chosen_action.action_type == ActionType.MOVE:
@@ -84,37 +85,33 @@ class Game:
     def move_entity(self, entity: Entity, position: Position):
         self.board.move_entity(entity, position)
     
-    def llm_friendly_world_state_print(self):
+    def llm_friendly_world_state_string(self):
+        output = ""
         current_entity = self.turn_order[0]
-        current_entity.llm_friendly_print()
-        print("My teammates are: (team " + str(current_entity.team) + ")" )
+        output += current_entity.llm_friendly_string() + "\n"
+        output += "My teammates are: (team " + str(current_entity.team) + ")\n"
         for entity in self.entities:
             if entity.team == current_entity.team and entity != current_entity:
-                print(entity.name)
-        print("")
-        print("My enemies are: (team " + str(current_entity.team) + ")" )
+                output += entity.name + "\n"
+        output += "\nMy enemies are: (team " + str((current_entity.team + 1) % 2) + ")\n"
         for entity in self.entities:
             if entity.team != current_entity.team:
-                print(entity.name)
-        print("")                
+                output += entity.name + "\n"
+        output += "\nMy valid moves are:\n"
         action_count = 0
-        print("My valid moves are: ")
         for action in current_entity.calculate_valid_moves(self):
-            print(action_count, ":", action)
+            output += str(action_count) + ": " + str(action) + "\n"
             action_count += 1
-        print("")
-        print("My valid attacks are: ")
+        output += "\nMy valid attacks are:\n"
         for action in current_entity.calculate_valid_attacks(self):
-            print(action_count, ":", str(action))
+            output += str(action_count) + ": " + str(action) + "\n"
             action_count += 1
-        print("")
-        print("The board looks like: ")
-        self.board.draw_board()
-        print("")
-        print("The turn order is: ")
+        output += "\nThe board looks like:\n"
+        output += self.board.draw_board_string() + "\n"
+        output += "The turn order is:\n"
         for entity in self.turn_order:
-            print(entity.name)
-        print("")
+            output += entity.name + "\n"
+        return output
     
     def remove_entity(self, entity: Entity):
         self.board.remove_entity(entity)
