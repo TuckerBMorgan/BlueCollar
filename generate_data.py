@@ -39,8 +39,8 @@ for i in range(1):
                 board_str += character_names[board[j][k]][0]
         board_str += "\n"
 
-    teammates = "".join([f"{character_names[j]} (health: {random.randint(1, 10)}, damage: {random.randint(1, 3)})\n" if teams[j] == teams[my_index] else "" for j in range(num_characters)])
-    enemies = "".join([f"{character_names[j]} (health: {random.randint(1, 10)}, damage: {random.randint(1, 3)})\n" if teams[j] != teams[my_index] else "" for j in range(num_characters)])
+    teammates = "".join([f"{character_names[j]} (health: {random.randint(1, 10)}, damage: {random.randint(1, 3)})\n" for j in range(num_characters) if teams[j] == teams[my_index]])
+    enemies = "".join([f"{character_names[j]} (health: {random.randint(1, 10)}, damage: {random.randint(1, 3)})\n" for j in range(num_characters) if teams[j] != teams[my_index]])
 
     actions = []
     for j in range(positions[my_index][0] - 1, positions[my_index][0] + 2):
@@ -49,17 +49,22 @@ for i in range(1):
         for k in range(positions[my_index][1] - 1, positions[my_index][1] + 2):
             if k < 0 or k >= board_size:
                 continue
-            if board[j][k] == None:
+            if board[j][k] == None or (j == positions[my_index][0] and k == positions[my_index][1]):
                 actions.append(("M", (j, k)))
-            else:
+            elif teams[board[j][k]] != teams[my_index]:
                 actions.append(("A", (j, k)))
 
-    moves = "".join([f"{j} : I can move to {actions[j][1]}\n" if actions[j][0] == "M" else "" for j in range(len(actions))])
-    attacks = "".join([f"{j} : I can attack {character_names[board[actions[j][1][0]][actions[j][1][1]]]} at {actions[j][1]}\n" if actions[j][0] == "A" else "" for j in range(len(actions))])
+    moves = "".join([f"{j} : I can move to {actions[j][1]}\n" for j in range(len(actions)) if actions[j][0] == "M"])
+    if len(moves) == 0:
+        moves = "None"
+    attacks = "".join([f"{j} : I can attack {character_names[board[actions[j][1][0]][actions[j][1][1]]]} at {actions[j][1]}\n" for j in range(len(actions)) if actions[j][0] == "A"])
+    if len(attacks) == 0:
+        attacks = "None"
     actions_str = "".join([f"{j} : I can move to {actions[j][1]}\n" if actions[j][0] == "M" else f"{j} : I can attack {character_names[board[actions[j][1][0]][actions[j][1][1]]]} at {actions[j][1]}\n" for j in range(len(actions))])
 
-    turn_order = [character_names[j] for j in range(num_characters)]
+    turn_order = [character_names[j] for j in range(num_characters) if j != my_index]
     random.shuffle(turn_order)
+    turn_order = [character_names[my_index]] + turn_order
     turn_order_str = "\n".join(turn_order)
 
     # print(f"num_characters {num_characters}")
