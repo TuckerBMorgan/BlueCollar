@@ -18,7 +18,7 @@ class Game:
         # loop over all entities, add them to the board, and give them a random turn order
         self.turn_order = []
         for entity in self.entities:
-            self.board.add_entity(entity, entity.position)
+            self.board.set_entity(entity, entity.position)
             self.turn_order.append(entity)
         # shuffle the turn order
         random.shuffle(self.turn_order)
@@ -56,6 +56,7 @@ class Game:
         valid_actions = valid_moves + valid_attacks
         return valid_actions
 
+    
     def update(self, chosen_action):
         # pick a random action
         if chosen_action.action_type == ActionType.MOVE:

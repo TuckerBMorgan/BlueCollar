@@ -64,6 +64,12 @@ class Entity:
                 # don't allow moving off the board
                 if new_position.x < 0 or new_position.x >= game.board.x_size or new_position.y < 0 or new_position.y >= game.board.y_size:
                     continue
+                    
+                # don't allow moving onto a tile with an entity
+                if game.board.get_entity(new_position) is not None:
+                    continue
+                
+                
                 if game.board.get_tile(new_position) is not None:
                     valid_moves.append(Action(ActionType.MOVE, new_position))
 
@@ -80,8 +86,8 @@ class Entity:
                 new_position = Position(self.position.x + x, self.position.y + y)
                 if new_position.x < 0 or new_position.x >= game.board.x_size or new_position.y < 0 or new_position.y >= game.board.y_size:
                     continue
-                entities = game.get_entities(new_position)
-                for entity in entities:
-                    if entity.team != self.team:
-                        valid_attacks.append(Action(ActionType.ATTACK, (new_position, entity.name)))
+                entity = game.board.get_entity(new_position)
+                
+                if entity is not None and entity.team != self.team:
+                    valid_attacks.append(Action(ActionType.ATTACK, (new_position, entity.name)))
         return valid_attacks

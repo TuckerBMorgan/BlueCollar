@@ -26,11 +26,19 @@ for i in range(5):
 tiles = []
 for i in range(5):
     for j in range(5):
-        tiles.append(Tile(Position(i, j), []))
+        tiles.append(Tile(Position(i, j)))
 board = Board(tiles)
 game = Game(board, entities)
 print(game.llm_friendly_world_state_string())
 
+pygame.init()
+screen = pygame.display.set_mode((800, 600))
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+    render(game, screen)
 
 
 exit()
@@ -38,12 +46,4 @@ exit()
 while game.is_over() == False:
     game.preform_turn()
 
-'''
-pygame.init()
-    screen = pygame.display.set_mode((800, 600))
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
-    render(game, screen)
-'''
+
