@@ -92,11 +92,11 @@ class Game:
         output += "My teammates are: (team " + str(current_entity.team) + ")\n"
         for entity in self.entities:
             if entity.team == current_entity.team and entity != current_entity:
-                output += entity.name + "\n"
+                output += entity.third_person_string() + "\n"
         output += "\nMy enemies are: (team " + str((current_entity.team + 1) % 2) + ")\n"
         for entity in self.entities:
             if entity.team != current_entity.team:
-                output += entity.name + "\n"
+                output += entity.third_person_string() + "\n"
         output += "\nMy valid moves are:\n"
         action_count = 0
         for action in current_entity.calculate_valid_moves(self):

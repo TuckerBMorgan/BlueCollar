@@ -53,6 +53,10 @@ class Entity:
         info_str += f"I am at position {self.position}\n\n"
         return info_str
 
+    def third_person_string(self):
+        # it should print in the format (Name, (Health: Amount, Damage: Amount))
+        return f"{self.name}, (Health: {self.health}, Damage: {self.damage})"
+    
     def calculate_valid_moves(self, game):
         # this will return a list of Actions where the action_type is MOVE and the payload is a Position
         valid_moves = []
