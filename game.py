@@ -25,7 +25,7 @@ class Game:
         
         self.controllers = {}
         self.controllers[0] = Controller(ControllerType.RANDOM)
-        self.controllers[1] = Controller(ControllerType.MANUAL)
+        self.controllers[1] = Controller(ControllerType.RANDOM)
         
     def preform_turn(self):
         possible_actions = self.start_turn()
@@ -42,7 +42,7 @@ class Game:
     
     def place_characters(self):
         for entity in self.entities:
-            self.board.add_entity(entity, entity.position)
+            self.board.set_entity(entity, entity.position)
 
     def start_turn(self):
         self.clear_board()
