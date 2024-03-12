@@ -47,13 +47,15 @@ class Board:
         for tile in self.tiles:
             tile.clear_entities()
     
-    def draw_board(self):
+    def draw_board_string(self):
+        board_string = ""
         for x in range(self.x_size):
             for y in range(self.y_size):
                 tile = self.get_tile(Position(x, y))
-                if tile.entities == []:
-                    print(f"-", end=" ")
+                if not tile.entities:
+                    board_string += "- "
                 else:
-                    print(f"{tile.entities[0].display_character}" , end=" ")
-            print()
+                    board_string += f"{tile.entities[0].display_character} "
+            board_string += "\n"  # Move to the next line after each row is processed
+        return board_string
                 

@@ -29,11 +29,11 @@ for i in range(5):
         tiles.append(Tile(Position(i, j), []))
 board = Board(tiles)
 game = Game(board, entities)
-game.llm_friendly_world_state_print()
+print(game.llm_friendly_world_state_string())
 
 
 
-
+exit()
 
 while game.is_over() == False:
     game.preform_turn()

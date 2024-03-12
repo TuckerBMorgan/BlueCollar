@@ -43,18 +43,15 @@ class Entity:
         self.health = entity_recipe.health
         self.damage = entity_recipe.damage
 
-    def llm_friendly_print(self):
-        #print the entity name
-        print("I am", self.name, "I am represented by", self.display_character)
-        print("I am on team", self.team)
-        print("I have", self.health, "health")
-        print("I can do", self.damage, "damage")
-        print("I can move", self.movement_range, "tiles")
-        print("I can attack", self.attack_range, "tiles")
-        print("I am at position", self.position)
-
-        print("")
-
+    def llm_friendly_string(self):
+        info_str = f"I am {self.name}, I am represented by {self.display_character}\n"
+        info_str += f"I am on team {self.team}\n"
+        info_str += f"I have {self.health} health\n"
+        info_str += f"I can do {self.damage} damage\n"
+        info_str += f"I can move {self.movement_range} tiles\n"
+        info_str += f"My attack range is {self.attack_range} tiles\n"
+        info_str += f"I am at position {self.position}\n\n"
+        return info_str
 
     def calculate_valid_moves(self, game):
         # this will return a list of Actions where the action_type is MOVE and the payload is a Position
