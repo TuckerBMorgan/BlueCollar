@@ -69,10 +69,10 @@ while True:
 
     moves = "".join([f"{j} : I can move to {actions[j][1]}\n" for j in range(len(actions)) if actions[j][0] == "M"])
     if len(moves) == 0:
-        moves = "None"
+        moves = "None\n"
     attacks = "".join([f"{j} : I can attack {character_names[board[actions[j][1][0]][actions[j][1][1]]]} at {actions[j][1]}\n" for j in range(len(actions)) if actions[j][0] == "A"])
     if len(attacks) == 0:
-        attacks = "None"
+        attacks = "None\n"
     actions_str = "".join([f"{j} : I can move to {actions[j][1]}\n" if actions[j][0] == "M" else f"{j} : I can attack {character_names[board[actions[j][1][0]][actions[j][1][1]]]} at {actions[j][1]}\n" for j in range(len(actions))])
 
     turn_order = [character_names[j] for j in range(num_characters) if j != my_index]
@@ -123,6 +123,7 @@ Choose an action:
             data = json.load(file)
 
     data["data"].append({prompt: response})
+    print("Data has " + str(len(data["data"])) + " rows")
 
     with open(data_file, 'w') as file:
         json.dump(data, file, indent=4)
