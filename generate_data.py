@@ -3,8 +3,8 @@ import json
 
 character_names = ["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi", "Ivan", "Judy", "Kevin", "Laura", "Mallory", "Nancy", "Oscar", "Peggy", "Quentin", "Romeo", "Sybil", "Trent", "Ursula", "Victor", "Walter", "Xander", "Yvonne", "Zelda"]
 
-outputs = []
-for i in range(1000):
+prompts = []
+for i in range(50):
     num_characters = random.randint(2, 10)
     teams = None
     while True:
@@ -99,7 +99,7 @@ The turn order is:
 Choose an action:
 {actions_str}"""
     print(data)
-    outputs.append(data)
+    prompts.append(data)
 
 with open("generated_data.json", "w") as f:
-    f.write(json.dumps({"data": outputs}))
+    f.write(json.dumps({"data": prompts}))
