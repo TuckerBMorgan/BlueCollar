@@ -1,10 +1,21 @@
 import random
 import json
+import os
+import subprocess
 
+data_file = "generated_data.json"
 character_names = ["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi", "Ivan", "Judy", "Kevin", "Laura", "Mallory", "Nancy", "Oscar", "Peggy", "Quentin", "Romeo", "Sybil", "Trent", "Ursula", "Victor", "Walter", "Xander", "Yvonne", "Zelda"]
 
-prompts = []
-for i in range(50):
+# https://stackoverflow.com/a/25802742/3696113
+def write_to_clipboard(output):
+    process = subprocess.Popen(
+        'pbcopy', env={'LANG': 'en_US.UTF-8'}, stdin=subprocess.PIPE)
+    process.communicate(output.encode('utf-8'))
+def read_from_clipboard():
+    return subprocess.check_output(
+        'pbpaste', env={'LANG': 'en_US.UTF-8'}).decode('utf-8')
+
+while True:
     num_characters = random.randint(2, 10)
     teams = None
     while True:
@@ -76,7 +87,7 @@ for i in range(50):
     # print(f"positions {positions}")
     # print()
 
-    data = f"""I am {character_names[my_index]} represented by the letter {character_names[my_index][0]}
+    prompt = f"""I am {character_names[my_index]} represented by the letter {character_names[my_index][0]}
 I have {random.randint(1, 10)} health
 I can do {random.randint(1, 3)} damage per turn
 I can move 1 tile per turn
@@ -98,8 +109,20 @@ The turn order is:
 
 Choose an action:
 {actions_str}"""
-    print(data)
-    prompts.append(data)
 
-with open("generated_data.json", "w") as f:
-    f.write(json.dumps({"data": prompts}))
+    write_to_clipboard(prompt)
+    print("Copied to clipboard")
+
+    input("Press enter to continue")
+    response = read_from_clipboard()
+
+    if not os.path.exists(data_file):
+        data = {"data": []}
+    else:
+        with open(data_file, 'r') as file:
+            data = json.load(file)
+
+    data["data"].append({prompt: response})
+
+    with open(data_file, 'w') as file:
+        json.dump(data, file, indent=4)
