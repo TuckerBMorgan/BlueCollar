@@ -3,7 +3,7 @@ import json
 import os
 import subprocess
 
-data_file = "generated_data.json"
+data_file = "data.json"
 character_names = ["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi", "Ivan", "Judy", "Kevin", "Laura", "Mallory", "Nancy", "Oscar", "Peggy", "Quentin", "Romeo", "Sybil", "Trent", "Ursula", "Victor", "Walter", "Xander", "Yvonne", "Zelda"]
 
 # https://stackoverflow.com/a/25802742/3696113
