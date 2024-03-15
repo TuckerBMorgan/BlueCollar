@@ -25,6 +25,8 @@ examples = [f"<s> [INST]\n{intstructions_string}\n\n{key}\n[/INST]\n\n{value} </
 train_examples, test_examples = train_test_split(examples, test_size=0.1, random_state=42)
 
 with open(train_output_file, 'w') as train_file:
-    json.dump({"examples": train_examples}, train_file, indent=4)
+    for example in train_examples:
+        train_file.write(json.dumps({"example": example}) + '\n')
 with open(test_output_file, 'w') as test_file:
-    json.dump({"examples": test_examples}, test_file, indent=4)
+    for example in test_examples:
+        test_file.write(json.dumps({"example": example}) + '\n')
