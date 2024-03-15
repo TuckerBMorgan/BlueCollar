@@ -1,8 +1,7 @@
-import pandas as pd
 import json
 
 input_file = "data.json"
-output_file = "data.csv"
+output_file = "data.json"
 
 with open(input_file, 'r') as file:
     data = json.load(file)
@@ -21,6 +20,5 @@ Action: 4
 Now make your decision based on the following state of the game."""
 examples = [{"example": f"<s> [INST]\n{intstructions_string}\n\n{key}\n[/INST]\n\n{value} </s>"} for entry in data["data"] for key, value in entry.items()]
 
-df = pd.DataFrame(examples)
-
-df.to_csv(output_file, index=False)
+with open('data_modified.json', 'w') as outfile:
+    json.dump({"examples": examples}, outfile, indent=4)
