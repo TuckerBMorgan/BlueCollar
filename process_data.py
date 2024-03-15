@@ -18,7 +18,7 @@ Reasoning: I will prioritize attacking enemies with lower health to take them ou
 Action: 4
 
 Now make your decision based on the following state of the game."""
-examples = [{"example": f"<s> [INST]\n{intstructions_string}\n\n{key}\n[/INST]\n\n{value} </s>"} for entry in data["data"] for key, value in entry.items()]
+examples = [f"<s> [INST]\n{intstructions_string}\n\n{key}\n[/INST]\n\n{value} </s>" for entry in data["data"] for key, value in entry.items()]
 
-with open('data_modified.json', 'w') as outfile:
+with open(output_file, 'w') as outfile:
     json.dump({"examples": examples}, outfile, indent=4)
