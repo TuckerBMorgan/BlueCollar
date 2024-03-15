@@ -1,7 +1,9 @@
 import json
+from sklearn.model_selection import train_test_split
 
 input_file = "data.json"
-output_file = "data.json"
+train_output_file = "train.json"
+test_output_file = "test.json"
 
 with open(input_file, 'r') as file:
     data = json.load(file)
@@ -20,5 +22,9 @@ Action: 4
 Now make your decision based on the following state of the game."""
 examples = [f"<s> [INST]\n{intstructions_string}\n\n{key}\n[/INST]\n\n{value} </s>" for entry in data["data"] for key, value in entry.items()]
 
-with open(output_file, 'w') as outfile:
-    json.dump({"examples": examples}, outfile, indent=4)
+train_examples, test_examples = train_test_split(examples, test_size=0.1, random_state=42)
+
+with open(train_output_file, 'w') as train_file:
+    json.dump({"examples": train_examples}, train_file, indent=4)
+with open(test_output_file, 'w') as test_file:
+    json.dump({"examples": test_examples}, test_file, indent=4)
