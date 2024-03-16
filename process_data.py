@@ -1,7 +1,9 @@
 import json
+from sklearn.model_selection import train_test_split
 
 input_file = "raw_data.json"
-output_file = "data.json"
+train_output_file = "train.json"
+test_output_file = "test.json"
 
 with open(input_file, 'r') as file:
     data = json.load(file)
@@ -21,6 +23,11 @@ Now make your decision based on the following state of the game."""
 
 examples = [{"instruction": intstructions_string, "input": key, "output": value} for entry in data["data"] for key, value in entry.items()]
 
-with open(output_file, 'w') as train_file:
-    for example in examples:
+train_examples, test_examples = train_test_split(examples, test_size=0.1, random_state=42)
+
+with open(train_output_file, 'w') as train_file:
+    for example in train_examples:
         train_file.write(json.dumps(example) + '\n')
+with open(test_output_file, 'w') as test_file:
+    for example in test_examples:
+        test_file.write(json.dumps(example) + '\n')
