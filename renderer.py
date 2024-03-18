@@ -1,5 +1,8 @@
 import pygame
 
+scale_factor = 4.0
+tile_size = 16
+total = tile_size * scale_factor
 
 def load_tile_images():
     # Placeholder function to load images.
@@ -7,7 +10,15 @@ def load_tile_images():
     # Example: {"grass": pygame.image.load("grass_tile.png"), "water": pygame.image.load("water_tile.png")}
     tiles = {}
     tiles["ground"] = pygame.image.load("./assets/tile_0049.png")
-    tiles["Alice"] = pygame.image.load("./assets/tile_0086.png")
+    tiles["Alice"] = pygame.image.load("./assets/tile_0084.png")
+    
+    tiles["Bob"] = pygame.image.load("./assets/tile_0086.png")
+    
+    tiles["Charlie"] = pygame.image.load("./assets/tile_0086.png")
+    
+    tiles["David"] = pygame.image.load("./assets/tile_0087.png")
+    
+    tiles["Eve"] = pygame.image.load("./assets/tile_0088.png")
     return tiles
 
 # Global dictionary of tile images
@@ -20,10 +31,11 @@ def render_tile(screen, tile):
     :param screen: Pygame screen to render the tile on.
     :param tile: Tile object with 'position' and 'tile_type' attributes.
     """
+
     tile_image = TILE_IMAGES.get(tile.tile_type)
     if tile_image:
-        position = (tile.position.x * 16, tile.position.y * 16)
-        screen.blit(tile_image, position)
+        position = ( tile.position.x * total, tile.position.y * total)
+        screen.blit(pygame.transform.scale(tile_image, (total, total)), position)
 
 def render_tiles(screen, game_state):
     """
@@ -45,8 +57,8 @@ def render_entities(screen, game_state):
     for entity in game_state.entities:
         if entity.name in TILE_IMAGES:
             entity_image = TILE_IMAGES[entity.name]
-            position = (entity.position.x * 16, entity.position.y * 16)
-            screen.blit(entity_image, position)
+            position = (entity.position.x * total, entity.position.y * total)
+            screen.blit(pygame.transform.scale(entity_image, (total * 0.75, total * 0.75)), position)
 
 
 def render(game_state, screen):

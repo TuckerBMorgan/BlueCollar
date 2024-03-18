@@ -41,6 +41,7 @@ while game.is_over() == False:
             pygame.quit()
             exit()
     render(game, screen)
+    pygame.time.wait(16)
 
 while game.is_over() == False:
     game.preform_turn()
